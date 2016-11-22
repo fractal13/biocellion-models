@@ -60,7 +60,7 @@ Biocellion has three main components.
 <!-- stdout, control standard output, optional
 	verbosity: controls the verbosity of standard output messages (5 for the highest level of verbosity), optional, default=1, [0,5]
 -->
-<stdout verbosity="5"/>
+<stdout verbosity="1"/>
 
 <!-- system, parameters related to shared and distributed memory parallelism, optional
 	num_threads: number of threads per MPI process, optional, integer, default=# cores (or hardware threads) in a node, [1,)
