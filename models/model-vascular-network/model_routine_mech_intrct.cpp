@@ -35,20 +35,22 @@ void ModelRoutine::initJunctionSpAgent( const VIdx& vIdx0, const SpAgent& spAgen
 void ModelRoutine::computeForceSpAgent( const VIdx& vIdx0, const SpAgent& spAgent0, const Vector<REAL>& v_gridPhi0/* [elemIdx] */, const Vector<REAL>& v_gridModelReal0/* [elemIdx] */, const Vector<S32>& v_gridModelInt0/* [elemIdx] */, const VIdx& vIdx1, const SpAgent& spAgent1, const Vector<REAL>& v_gridPhi1/* [elemIdx] */, const Vector<REAL>& v_gridModelReal1/* [elemIdx] */, const Vector<S32>& v_gridModelInt1/* [elemIdx] */, const VReal& dir/* unit direction vector from spAgent1 to spAgent0 */, const REAL& dist, VReal& force/* force on spAgent0 due to interaction with spAgent1 (force on spAgent1 due to interaction with spAgent0 has same magnitude but the opposite direction), if force has the same direction with dir, two cells push each other, if has the opposite direction, two cells pull each other. */ ) {
 	/* MODEL START */
 
-	REAL R = spAgent0.state.getRadius() + spAgent1.state.getRadius();
-	REAL mag;/* + for repulsive force, - for adhesive force */
+  REAL R = spAgent0.state.getRadius() + spAgent1.state.getRadius();
+  REAL mag;/* + for repulsive force, - for adhesive force */
 
-	if( dist <= R ) {/* shoving */
-		mag = 0.5 * ( R - dist );
-	}
-	else {/* adhesion */
-		REAL x = dist / R;
-		mag = -0.5 * ( dist - R ) * exp( -1.0 * ( x - 1.0 ) * ( x - 1.0 ) / ADHESION_S );
-	}
+  if( dist <= R ) {/* shoving */
+    REAL rigidity = (A_CELL_RIGIDITY[spAgent0.state.getType()] + A_CELL_RIGIDITY[spAgent1.state.getType()])/2.0;
+    mag = rigidity * ( R - dist );
+  }
+  else {/* adhesion */
+    REAL x = dist / R;
+    REAL a = ADHESION_A[spAgent0.state.getType()][spAgent1.state.getType()];
+    mag = -a * ( dist - R ) * exp( -1.0 * ( x - 1.0 ) * ( x - 1.0 ) / A_ADHESION_SCALE );
+  }
 
-	for( S32 dim = 0 ; dim < DIMENSION ; dim++ ) {
-		force[dim] = mag * dir[dim];
-	}
+  for( S32 dim = 0 ; dim < DIMENSION ; dim++ ) {
+    force[dim] = mag * dir[dim];
+  }
 
 	/* MODEL END */
 
