@@ -114,7 +114,7 @@ S32 findNearestInterface(const VReal& vOffset, const VReal& vDir) {
 	REAL tNearest = 1.0e10;
 	for (S32 dim = 0; dim < DIMENSION; dim++) {
 		if (fabs(vDir[dim]) > 0.0001) {
-			S32 t = ((vDir[dim] > 0 ? 0.5 : -0.5) - vOffset[dim] / IF_GRID_SPACING) / vDir[dim];
+			REAL t = ((vDir[dim] > 0 ? 0.5 : -0.5) - vOffset[dim] / IF_GRID_SPACING) / vDir[dim];
 			if (t < tNearest) {
 				interface = dim;
 				tNearest = t;
@@ -173,7 +173,7 @@ void ModelRoutine::adjustSpAgent( const VIdx& vIdx, const AgentJunctionInfo& jun
 
 	// random motion
 	for( S32 dim = 0 ; dim < DIMENSION ; dim++ ) {
-    disp[dim] += A_CELL_RADIUS[state.getType()] * ( Util::getModelRand( MODEL_RNG_GAUSSIAN ) ) * A_CELL_TEMP[state.getType()];
+		disp[dim] += A_CELL_RADIUS[state.getType()] * ( Util::getModelRand( MODEL_RNG_GAUSSIAN ) ) * A_CELL_TEMP[state.getType()];
 	}
 
 	for( S32 dim = 0 ; dim < DIMENSION ; dim++ ) {/* limit the maximum displacement within a single time step */
