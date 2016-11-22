@@ -111,11 +111,14 @@ void ModelRoutine::updateSpAgentBirthDeath( const VIdx& vIdx, const SpAgent& spA
 
 S32 findNearestInterface(const VReal& vOffset, const VReal& vDir) {
 	S32 interface = -1;
-	REAL tNearest = 1.5; // at least one t value should be less than sqrt(2)
+	REAL tNearest = 1.0e10;
 	for (S32 dim = 0; dim < DIMENSION; dim++) {
-		S32 t = ((vDir[dim] > 0 ? 0.5 : -0.5) - vOffset[dim] / IF_GRID_SPACING) / vDir[dim];
-		if (t < tNearest) {
-			interface = dim;
+		if (fabs(vDir[dim]) > 0.0001) {
+			S32 t = ((vDir[dim] > 0 ? 0.5 : -0.5) - vOffset[dim] / IF_GRID_SPACING) / vDir[dim];
+			if (t < tNearest) {
+				interface = dim;
+				tNearest = t;
+			}
 		}
 	}
 	return interface;
@@ -131,11 +134,7 @@ void ModelRoutine::adjustSpAgent( const VIdx& vIdx, const AgentJunctionInfo& jun
 		fwdDir[dim] = -0.5 + Util::getModelRand(MODEL_RNG_UNIFORM);
 		mag += fwdDir[dim] * fwdDir[dim];
 	}
-#if REAL_IS_FLOAT
-	mag = sqrtf(mag);
-#else
 	mag = sqrt(mag);
-#endif
 	for (S32 dim = 0; dim < DIMENSION; dim++) {
 		fwdDir[dim] /= mag; // normalize
 		bckDir[dim] = -fwdDir[dim];
