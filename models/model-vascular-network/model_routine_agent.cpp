@@ -174,7 +174,7 @@ void ModelRoutine::adjustSpAgent( const VIdx& vIdx, const AgentJunctionInfo& jun
 
 	// random motion
 	for( S32 dim = 0 ; dim < DIMENSION ; dim++ ) {
-		disp[dim] += A_CELL_RADIUS[state.getType()] * ( -0.5 + Util::getModelRand( MODEL_RNG_UNIFORM ) ) * 0.1;
+    disp[dim] += A_CELL_RADIUS[state.getType()] * ( Util::getModelRand( MODEL_RNG_GAUSSIAN ) ) * A_CELL_TEMP[state.getType()];
 	}
 
 	for( S32 dim = 0 ; dim < DIMENSION ; dim++ ) {/* limit the maximum displacement within a single time step */

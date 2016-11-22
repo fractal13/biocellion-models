@@ -68,7 +68,7 @@ void ModelRoutine::updateIfGridKappa( const VIdx& vIdx, const UBAgentData& ubAge
 void ModelRoutine::updateIfGridAlpha( const S32 elemIdx, const VIdx& vIdx, const UBAgentData& ubAgentData, const Vector<REAL>& v_gridPhi/* [elemIdx] */, const Vector<REAL>& v_gridModelReal/* [elemIdx] */, const Vector<S32>& v_gridModelInt/* [elemIdx] */, REAL& gridAlpha/* decay (-) */ ) {
 	/* MODEL START */
 
-	gridAlpha = DIFFUSIBLE_ELEM_DECAY_RATE[elemIdx];
+	gridAlpha = -DIFFUSIBLE_ELEM_DECAY_RATE[elemIdx];
 
 	/* MODEL END */
 
