@@ -4,7 +4,6 @@ include ../../Makefile.model
 INCLUDE += -I ../include
 
 CXXFLAG += -fPIC
-CXXFLAG += $(PARAMETER_DEFINES)
 
 libmodelroutine.a: model_routine_config.o model_routine_grid.o model_routine_agent.o model_routine_mech_intrct.o model_routine_output.o
 	$(AR) rcs libmodelroutine.a model_routine_config.o model_routine_grid.o model_routine_agent.o model_routine_mech_intrct.o model_routine_output.o
