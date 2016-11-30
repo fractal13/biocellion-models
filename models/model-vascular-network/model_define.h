@@ -28,6 +28,7 @@ NOTICE:  These data were produced by Battelle Memorial Institute (BATTELLE) unde
 #define A_CHEMOTAXIS_FORCE_STRENGTH 1.0 /* 0.10 - 10.00 */
 #define A_CHEMO_DECAY_RATE 0.05         /* 0.01 -  0.15 */
 #define A_CHEMO_DIFFUSION 1.0           /* ??? */
+#define A_INITIAL_CELL_DENSITY 0.5  /* ??? */
 #endif
 
 
@@ -56,7 +57,7 @@ typedef enum _model_rng_type_e {
 const REAL IF_GRID_SPACING = 4.0;
 
 const REAL A_CELL_RADIUS[NUM_CELL_TYPES] = { A_RADIUS };
-const REAL A_CELL_DENSITY_PER_UB[NUM_CELL_TYPES] = { 0.4 };
+const REAL A_CELL_DENSITY_PER_UB[NUM_CELL_TYPES] = { A_INITIAL_CELL_DENSITY };
 const REAL A_CELL_D_MAX[NUM_CELL_TYPES] = { IF_GRID_SPACING };
 const REAL A_CELL_CHEMOATTRACTANT_SECRETION_RATE[NUM_CELL_TYPES] = { A_SECRETE_RATE };
 const REAL A_CELL_CHEMOTAXIS_FORCE_STRENGTH[NUM_CELL_TYPES] = { A_CHEMOTAXIS_FORCE_STRENGTH };
