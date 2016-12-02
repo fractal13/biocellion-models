@@ -19,7 +19,7 @@ using namespace std;
 void ModelRoutine::initIfGridVar( const VIdx& vIdx, const UBAgentData& ubAgentData, Vector<REAL>& v_gridPhi/* [elemIdx] */, Vector<REAL>& v_gridModelReal/* [elemIdx] */, Vector<S32>& v_gridModelInt ) {
   /* MODEL START */
 
-  CHECK( v_gridPhi.size() == NUM_DIFFUSABLE_ELEMS );
+  CHECK( v_gridPhi.size() == NUM_DIFFUSIBLE_ELEMS );
   CHECK( v_gridModelReal.size() == NUM_GRID_MODEL_REALS );
   CHECK( v_gridModelInt.size() == 0 );
 
