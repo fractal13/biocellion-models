@@ -63,6 +63,16 @@ void ModelRoutine::computeExtraMechIntrctSpAgent( const VIdx& vIdx0, const SpAge
   link = false;
   unlink = false;
 
+  REAL R = spAgent0.state.getRadius() + spAgent1.state.getRadius();
+  REAL x = dist / R;
+  if (x < 2.0) {
+    link = true;
+    end0.setType(0);
+    end1.setType(0);
+  } else if (spAgent0.junctionInfo.isLinked(spAgent1.junctionInfo)) {
+    unlink = true;
+  }
+
   /* MODEL END */
 
   return;

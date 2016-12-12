@@ -17,18 +17,18 @@ NOTICE:  These data were produced by Battelle Memorial Institute (BATTELLE) unde
 
 #ifndef PARAMETER_DEFINES
 #define PARAMETER_DEFINES
-#define AA_ADHESION 0.1                 /* 0.01 - 0.10 */
-#define A_TEMP 0.1                      /* */
-#define A_RIGIDITY 0.5                  /* */
-#define A_RADIUS 2.0
+#define AA_ADHESION 0.5                 /* 0.01 - 0.10 */
+#define A_TEMP 0.01                     /* */
+#define A_RIGIDITY 0.01                 /* */
+#define A_RADIUS 1.0
 #define BASELINE_TIMESTEP 1.0
 #define STEPS_PER_BASELINE_TIMESTEP 1
-#define ADHESION_SCALE 0.5
-#define A_SECRETE_RATE 0.05             /* 0.01 -  0.15 */
-#define A_CHEMOTAXIS_FORCE_STRENGTH 1.0 /* 0.10 - 10.00 */
-#define A_CHEMO_DECAY_RATE 0.05         /* 0.01 -  0.15 */
+#define ADHESION_SCALE 5.0
+#define A_SECRETE_RATE 0.15             /* 0.01 -  0.15 */
+#define A_CHEMOTAXIS_FORCE_STRENGTH 0.5 /* 0.10 - 10.00 */
+#define A_CHEMO_DECAY_RATE 0.15         /* 0.01 -  0.15 */
 #define A_CHEMO_DIFFUSION 1.0           /* ??? */
-#define A_INITIAL_CELL_DENSITY 0.5  /* ??? */
+#define A_INITIAL_CELL_DENSITY 1.0      /* ??? */
 #endif
 
 
@@ -54,7 +54,7 @@ typedef enum _model_rng_type_e {
 	NUM_MODEL_RNGS
 } model_rng_type_e;
 
-const REAL IF_GRID_SPACING = 4.0;
+const REAL IF_GRID_SPACING = 2.0;
 
 const REAL A_CELL_RADIUS[NUM_CELL_TYPES] = { A_RADIUS };
 const REAL A_CELL_DENSITY_PER_UB[NUM_CELL_TYPES] = { A_INITIAL_CELL_DENSITY };

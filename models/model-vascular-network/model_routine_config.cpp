@@ -130,6 +130,13 @@ void ModelRoutine::updateJunctionEndInfo( Vector<JunctionEndInfo>& v_junctionEnd
   /* MODEL START */
 
   v_junctionEndInfo.clear();
+  v_junctionEndInfo.resize(1);
+
+  JunctionEndInfo info;
+  info.numModelReals = 0;
+  info.numModelInts = 0;
+
+  v_junctionEndInfo[0] = info;
 
   /* MODEL END */
 

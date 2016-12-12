@@ -148,50 +148,52 @@ S32 findNearestInterface(const VReal& vOffset, const VReal& vDir) {
 void ModelRoutine::adjustSpAgent( const VIdx& vIdx, const AgentJunctionInfo& junctionInfo, const VReal& vOffset, const AgentMechIntrctData& mechIntrctData, const Vector<NbrBox<REAL> >& v_gridPhiNbrBox/* [elemIdx] */, const Vector<NbrBox<REAL> >& v_gridModelRealNbrBox/* [elemIdx] */, const Vector<NbrBox<S32> >& v_gridModelIntNbrBox/* [elemIdx] */, SpAgentState& state/* INOUT */, VReal& disp ) {
   /* MODEL START */
 
-  VReal fwdDir; // forward direction vector
-  VReal bckDir; // backward direction vector
-  REAL mag = 0.0;
-  for (S32 dim = 0; dim < DIMENSION; dim++) {
-    // do not do motion in z dimension *2D* 
-    if(dim == DIMENSION-1) { fwdDir[dim] = 0.0; continue; }
-
-    fwdDir[dim] = -0.5 + Util::getModelRand(MODEL_RNG_UNIFORM);
-    mag += fwdDir[dim] * fwdDir[dim];
-  }
-  mag = sqrt(mag);
-  for (S32 dim = 0; dim < DIMENSION; dim++) {
-    fwdDir[dim] /= mag; // normalize
-    bckDir[dim] = -fwdDir[dim];
-  }
-
-  S32 fwdInt = findNearestInterface(vOffset, fwdDir); // nearest forward interface
-  S32 bckInt = findNearestInterface(vOffset, bckDir); // nearest backward interface
-
-  VIdx fwdOffset; // forward neighbor offset
-  VIdx bckOffset; // backward neighbor offset
-  for (S32 dim = 0; dim < DIMENSION; dim++) {
-    fwdOffset[dim] = dim == fwdInt ? (fwdDir[fwdInt] > 0 ? 1 : -1) : 0;
-    bckOffset[dim] = dim == bckInt ? (bckDir[bckInt] > 0 ? 1 : -1) : 0;
-  }
-
-  NbrBox<REAL> nbr = v_gridPhiNbrBox[DIFFUSIBLE_ELEM_CHEMOATTRACTANT];
-
-  REAL fwdVal = 0.0;
-  REAL bckVal = 0.0;
-  if (nbr.getValidFlag(fwdOffset)) {
-    fwdVal = nbr.getVal(fwdOffset);
-  }
-  if (nbr.getValidFlag(bckOffset)) {
-    bckVal = nbr.getVal(bckOffset);
-  }
-
   disp = mechIntrctData.force;
 
-  S32 agentType = state.getType();
-  REAL chemForce = A_CELL_CHEMOTAXIS_FORCE_STRENGTH[agentType] * (fwdVal - bckVal);
-  if (chemForce > 0) {
+  if (junctionInfo.getNumJunctions() < 4) {
+    VReal fwdDir; // forward direction vector
+    VReal bckDir; // backward direction vector
+    REAL mag = 0.0;
     for (S32 dim = 0; dim < DIMENSION; dim++) {
-      disp[dim] += fwdDir[dim] * chemForce;
+      // do not do motion in z dimension *2D*
+      if(dim == DIMENSION-1) { fwdDir[dim] = 0.0; continue; }
+
+      fwdDir[dim] = -0.5 + Util::getModelRand(MODEL_RNG_UNIFORM);
+      mag += fwdDir[dim] * fwdDir[dim];
+    }
+    mag = sqrt(mag);
+    for (S32 dim = 0; dim < DIMENSION; dim++) {
+      fwdDir[dim] /= mag; // normalize
+      bckDir[dim] = -fwdDir[dim];
+    }
+
+    S32 fwdInt = findNearestInterface(vOffset, fwdDir); // nearest forward interface
+    S32 bckInt = findNearestInterface(vOffset, bckDir); // nearest backward interface
+
+    VIdx fwdOffset; // forward neighbor offset
+    VIdx bckOffset; // backward neighbor offset
+    for (S32 dim = 0; dim < DIMENSION; dim++) {
+      fwdOffset[dim] = dim == fwdInt ? (fwdDir[fwdInt] > 0 ? 1 : -1) : 0;
+      bckOffset[dim] = dim == bckInt ? (bckDir[bckInt] > 0 ? 1 : -1) : 0;
+    }
+
+    NbrBox<REAL> nbr = v_gridPhiNbrBox[DIFFUSIBLE_ELEM_CHEMOATTRACTANT];
+
+    REAL fwdVal = 0.0;
+    REAL bckVal = 0.0;
+    if (nbr.getValidFlag(fwdOffset)) {
+      fwdVal = nbr.getVal(fwdOffset);
+    }
+    if (nbr.getValidFlag(bckOffset)) {
+      bckVal = nbr.getVal(bckOffset);
+    }
+
+    S32 agentType = state.getType();
+    REAL chemForce = A_CELL_CHEMOTAXIS_FORCE_STRENGTH[agentType] * (fwdVal - bckVal);
+    if (chemForce > 0) {
+      for (S32 dim = 0; dim < DIMENSION; dim++) {
+        disp[dim] += fwdDir[dim] * chemForce;
+      }
     }
   }
 
